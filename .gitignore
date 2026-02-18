@@ -1,0 +1,40 @@
+# --- Ansible ---
+*.retry
+*.log
+
+# --- Secrets & Private Data ---
+secrets/
+.env
+*.pem
+*.key
+id_rsa
+id_rsa.pub
+.ssh/
+.gnupg/
+.netrc
+.npmrc
+
+# --- Temporary/Backup Files ---
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# --- Python ---
+__pycache__/
+*.pyc
+venv/
+.venv/
+env/
+
+# --- Ansible Vault (Encrypted Secrets) ---
+# If you use Ansible Vault, you generally COMMIT the encrypted file
+# but IGNORE the password file.
+.vault_pass
+.vault_password
+
+# --- Local Overrides ---
+# A place for you to put extra configs you don't want on GitHub
+local/
+personal/

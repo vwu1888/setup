@@ -1,0 +1,7 @@
+packages_extra:
+  - wget
+  - htop
+  - btop
+
+packages_engineering:
+  - kicad

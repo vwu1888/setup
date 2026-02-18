@@ -1,0 +1,7 @@
+---
+- name: Configure Git with Secrets
+  become: false
+  template:
+    src: .gitconfig.j2
+    dest: "{{ ansible_env.HOME }}/.gitconfig"
+    mode: '0644'
