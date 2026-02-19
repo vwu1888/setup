@@ -1,7 +1,42 @@
 ---
+# ==========================================
+# SYSTEM BASICS
+# ==========================================
+- name: Set Timezone
+  timezone:
+    name: "{{ timezone }}"
+  become: true
+
+# ==========================================
+# NATIVE PACKAGES (DNF)
+# ==========================================
+- name: Install Native Packages (Hybrid Dictionary)
+  dnf:
+    name: "{{ (global_packages | default([], true)).values() | flatten +
+    (host_packages | default([], true)).values() | flatten }}"
+    state: present
+  become: true
+
+# ==========================================
+# FLATPAK APPS 
+# ==========================================
+- name: Install Flatpak Apps
+  community.general.flatpak:
+    # Combines simple lists from vars.yml and host_vars
+    name: "{{ (global_flatpaks | default({}, true)).values() | flatten + 
+    (host_flatpaks | default({}, true)).values() | flatten }}"
+    state: present
+    remote: flathub
+  become: true
+
+# ==========================================
+# Config Git
+# ==========================================
 - name: Configure Git with Secrets
-  become: false
   template:
     src: .gitconfig.j2
     dest: "{{ ansible_env.HOME }}/.gitconfig"
     mode: '0644'
+  become: false
+
+- include_tasks: 1password.yml

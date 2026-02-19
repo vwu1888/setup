@@ -1,0 +1,11 @@
+---
+- name: Change shell to Zsh
+  user:
+    name: "{{ user_name }}"
+    shell: "{{ default_shell }}"
+  become: true
+
+- name: Stow Dotfiles
+  command: stow --target={{ ansible_env.HOME }} --dir={{ ansible_env.HOME }}/setup/dotfiles {{ item }}
+  loop: "{{ stow_dirs }}"
+  become: false 

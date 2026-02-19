@@ -1,13 +1,23 @@
 # User Details
 user_name: "vwu"
-user_fullname: "vwu"
 
 # System Settings
 timezone: "America/New_York"
 default_shell: "/bin/zsh"
 
 # Package Lists 
-packages_common:
-  - git
-  - curl
-  - vim
+global_packages:
+  core:
+    - git
+    - curl
+    - vim
+    - fastfetch
+  shell_env:
+    - zsh
+    - stow
+
+global_flatpaks:
+
+stow_dirs:
+  - zsh
+  - nvim

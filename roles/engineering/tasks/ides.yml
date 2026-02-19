@@ -1,0 +1,59 @@
+---
+# ==========================================
+# 1. VISUAL STUDIO CODE 
+# ==========================================
+- name: Setup Visual Studio Code
+  block:
+    - name: Import Microsoft GPG key
+      rpm_key:
+        state: present
+        key: https://packages.microsoft.com/keys/microsoft.asc
+
+    - name: Add VS Code repository
+      yum_repository:
+        name: code
+        description: Visual Studio Code
+        baseurl: https://packages.microsoft.com/yumrepos/vscode
+        enabled: yes
+        gpgcheck: yes
+        gpgkey: https://packages.microsoft.com/keys/microsoft.asc
+
+    - name: Install VS Code
+      dnf:
+        name: code
+        state: present
+  become: true
+
+# ==========================================
+# 2. JETBRAINS TOOLBOX 
+# ==========================================
+- name: Create directory for JetBrains Toolbox
+  file:
+    path: "{{ ansible_env.HOME }}/.local/share/JetBrains/Toolbox/"
+    state: directory
+    mode: '0755'
+  become: false 
+
+- name: Download and extract JetBrains Toolbox
+  unarchive:
+    src: "https://data.services.jetbrains.com/products/download?code=TBA&platform=linux"
+    dest: "{{ ansible_env.HOME }}/.local/share/JetBrains/Toolbox/"
+    remote_src: yes
+    extra_opts:
+      - --strip-components=1
+    creates: "{{ ansible_env.HOME }}/.local/share/JetBrains/Toolbox/bin"
+  become: false
+
+- name: Add JetBrains Toolbox to Application Search
+  copy:
+    dest: "{{ ansible_env.HOME }}/.local/share/applications/jetbrains-toolbox.desktop"
+    content: |
+      [Desktop Entry]
+      Name=JetBrains Toolbox
+      Comment=Manage JetBrains IDEs
+      Exec={{ ansible_env.HOME }}/.local/share/JetBrains/Toolbox//bin/jetbrains-toolbox
+      Terminal=false
+      Type=Application
+      Categories=Development;IDE;
+    mode: '0644'
+  become: false # Run as you!

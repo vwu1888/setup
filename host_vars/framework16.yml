@@ -1,7 +1,17 @@
-packages_extra:
-  - wget
-  - htop
-  - btop
+---
+host_packages:
+  utils:
+    - wget
+    - htop
+    - btop
+  tools:
+    - kicad
+    - inkscape
 
-packages_engineering:
-  - kicad
+host_flatpaks:
+  daily:
+    - com.slack.Slack
+    - com.discordapp.Discord
+    - dev.aunetx.deezer
+  gaming:
+    - com.valvesoftware.Steam
