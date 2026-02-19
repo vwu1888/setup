@@ -15,3 +15,5 @@ host_flatpaks:
     - dev.aunetx.deezer
   gaming:
     - com.valvesoftware.Steam
+  tools:
+    - com.bambulab.BambuStudio
