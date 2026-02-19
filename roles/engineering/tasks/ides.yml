@@ -56,4 +56,5 @@
       Type=Application
       Categories=Development;IDE;
     mode: '0644'
+    force: no
   become: false # Run as you!
