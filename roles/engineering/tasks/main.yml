@@ -2,3 +2,4 @@
 - include_tasks: ides.yml
 - include_tasks: udev.yml
 - include_tasks: zephyr.yml
+- include_tasks: digilent.yml

@@ -1,0 +1,40 @@
+---
+- name: Download Digilent Adept Runtime RPM
+  ansible.builtin.get_url:
+    url: "https://files.digilent.com/Software/Adept2%20Runtime/2.27.9/digilent.adept.runtime-2.27.9.x86_64.rpm"
+    dest: /tmp/digilent-adept.rpm
+
+- name: Check if Digilent Adept Runtime is installed
+  ansible.builtin.command: rpm -q digilent.adept.runtime
+  register: adept_check
+  failed_when: false
+  changed_when: false
+
+- name: Install Digilent Adept Runtime (Bypass digest checks)
+  ansible.builtin.command: rpm -Uvh --nodigest --nofiledigest /tmp/digilent-adept.rpm
+  become: true
+  when: adept_check.rc != 0
+
+- name: Install Qt5 dependencies for Digilent Waveforms
+  ansible.builtin.dnf:
+    name:
+      - qt5-qtscript
+      - qt5-qtserialport
+    state: present
+  become: true
+
+- name: Download Digilent Waveforms RPM
+  ansible.builtin.get_url:
+    url: "https://files.digilent.com/Software/Waveforms/3.24.4/digilent.waveforms_3.24.4.x86_64.rpm"
+    dest: /tmp/digilent-waveforms.rpm
+
+- name: Check if Digilent Waveforms is installed
+  ansible.builtin.command: rpm -q digilent.waveforms
+  register: waveforms_check
+  failed_when: false
+  changed_when: false
+
+- name: Install Digilent Waveforms (Bypass digest checks)
+  ansible.builtin.command: rpm -Uvh --nodigest --nofiledigest /tmp/digilent-waveforms.rpm
+  become: true
+  when: waveforms_check.rc != 0
