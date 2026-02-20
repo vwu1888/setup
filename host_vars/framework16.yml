@@ -4,6 +4,7 @@ host_packages:
     - wget
     - htop
     - btop
+    - uv
   tools:
     - kicad
     - inkscape
