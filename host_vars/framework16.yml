@@ -17,4 +17,5 @@ host_flatpaks:
   gaming:
     - com.valvesoftware.Steam
   tools:
+    - cc.arduino.IDE2  
     - com.bambulab.BambuStudio
