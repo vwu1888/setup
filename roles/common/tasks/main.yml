@@ -40,3 +40,4 @@
   become: false
 
 - include_tasks: 1password.yml
+- include_tasks: mullvad.yml
