@@ -1,0 +1,32 @@
+---
+# ==========================================
+# GRUB BOOTLOADER CONFIGURATION
+# ==========================================
+- name: Configure GRUB for Dual Booting
+  block:
+    - name: Set GRUB timeout to 10 seconds
+      lineinfile:
+        path: /etc/default/grub
+        regexp: '^GRUB_TIMEOUT='
+        line: 'GRUB_TIMEOUT=10'
+      register: grub_timeout
+
+    - name: Tell GRUB to remember the last selection
+      lineinfile:
+        path: /etc/default/grub
+        regexp: '^GRUB_DEFAULT='
+        line: 'GRUB_DEFAULT=saved'
+      register: grub_default
+
+    - name: Enable saving the default OS
+      lineinfile:
+        path: /etc/default/grub
+        regexp: '^GRUB_SAVEDEFAULT='
+        line: 'GRUB_SAVEDEFAULT=true'
+      register: grub_save
+
+    - name: Regenerate GRUB configuration
+      command: grub2-mkconfig -o /boot/grub2/grub.cfg
+      # Idempotency check: Only rebuild the bootloader if the lines above actually changed
+      when: grub_timeout.changed or grub_default.changed or grub_save.changed
+  become: true

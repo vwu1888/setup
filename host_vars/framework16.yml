@@ -1,4 +1,7 @@
 ---
+install_media_codecs: true
+enable_amd_hw_accel: false
+
 host_packages:
   utils:
     - wget

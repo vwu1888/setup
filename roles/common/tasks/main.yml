@@ -5,11 +5,13 @@
 - name: Set Timezone
   timezone:
     name: "{{ timezone }}"
+    hwclock: UTC
   become: true
 
 # ==========================================
 # NATIVE PACKAGES (DNF)
 # ==========================================
+- include_tasks: rpmFusion.yml
 - name: Install Native Packages (Hybrid Dictionary)
   dnf:
     name: "{{ (global_packages | default([], true)).values() | flatten +
@@ -20,6 +22,19 @@
 # ==========================================
 # FLATPAK APPS 
 # ==========================================
+- name: Remove the default Fedora Flatpak repository
+  community.general.flatpak_remote:
+    name: fedora
+    state: absent
+  become: true
+
+- name: Add Flathub repository
+  community.general.flatpak_remote:
+    name: flathub
+    state: present
+    flatpakrepo_url: https://dl.flathub.org/repo/flathub.flatpakrepo
+  become: true
+
 - name: Install Flatpak Apps
   community.general.flatpak:
     # Combines simple lists from vars.yml and host_vars
@@ -39,5 +54,8 @@
     mode: '0644'
   become: false
 
+- include_tasks: multimedia.yml
+  when: install_media_codecs | default(false) | bool
 - include_tasks: 1password.yml
 - include_tasks: mullvad.yml
+- include_tasks: grub.yml

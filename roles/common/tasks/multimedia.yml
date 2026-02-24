@@ -1,0 +1,61 @@
+# ==========================================
+# 1. BASE MEDIA CODECS & VA-API
+# ==========================================
+- name: Swap ffmpeg-free for full ffmpeg
+  command: dnf swap -y ffmpeg-free ffmpeg --allowerasing
+  register: ffmpeg_swap
+  changed_when: "'Nothing to do' not in ffmpeg_swap.stdout"
+  become: true
+
+- name: Install GStreamer plugins and base codecs
+  dnf:
+    name:
+      - gstreamer1-plugins-bad-free
+      - gstreamer1-plugins-good
+      - gstreamer1-plugins-base
+      - gstreamer1-plugin-openh264
+      - gstreamer1-libav
+      - lame
+      - openh264
+      - gstreamer1-plugin-openh264
+      - mozilla-openh264
+    state: present
+  become: true
+
+- name: Install multimedia and sound groups
+  dnf:
+    name:
+      - '@multimedia'
+      - '@sound-and-video'
+    state: present
+    install_weak_deps: no
+    exclude: PackageKit-gstreamer-plugin
+  become: true
+
+- name: Install VA-API and foundational media libraries
+  dnf:
+    name:
+      - ffmpeg-libs
+      - libva
+      - libva-utils
+    state: present
+  become: true
+
+- name: Enable Cisco OpenH264 Repository (for Firefox)
+  command: dnf config-manager setopt fedora-cisco-openh264.enabled=1
+  changed_when: false
+  become: true
+
+# ==========================================
+# 2. AMD HARDWARE ACCELERATION 
+# ==========================================
+- name: Swap default mesa drivers for freeworld (Hardware Acceleration)
+  command: dnf swap -y {{ item.from }} {{ item.to }} --allowerasing
+  loop:
+    - { from: 'mesa-va-drivers', to: 'mesa-va-drivers-freeworld' }
+    - { from: 'mesa-vdpau-drivers', to: 'mesa-vdpau-drivers-freeworld' }
+  register: mesa_swap
+  changed_when: "'Nothing to do' not in mesa_swap.stdout"
+  become: true
+  # This task ONLY runs if you set enable_amd_hw_accel: true in the host_vars file!
+  when: enable_amd_hw_accel | default(false) | bool
