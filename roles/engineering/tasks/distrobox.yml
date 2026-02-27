@@ -1,0 +1,14 @@
+---
+- name: Install Distrobox
+  dnf:
+    name: distrobox
+    state: present
+  become: true
+
+- name: Ensure Distrobox environments are built
+  ansible.builtin.command:
+    cmd: distrobox assemble create --file {{ ansible_env.HOME }}/.config/distrobox/distrobox.ini
+  register: distrobox_result
+  changed_when: "'Created' in distrobox_result.stdout"
+  become: false
+

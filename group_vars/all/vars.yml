@@ -21,3 +21,4 @@ global_flatpaks:
 stow_dirs:
   - zsh
   - nvim
+  - distrobox

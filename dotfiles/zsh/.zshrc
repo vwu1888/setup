@@ -10,3 +10,12 @@ zstyle :compinstall filename '/home/vwu/.zshrc'
 autoload -Uz compinit
 compinit
 # End of lines added by compinstall
+
+alias docker=podman
+
+# fnm
+FNM_PATH="/home/vwu/.local/share/fnm"
+if [ -d "$FNM_PATH" ]; then
+  export PATH="$FNM_PATH:$PATH"
+  eval "`fnm env`"
+fi
