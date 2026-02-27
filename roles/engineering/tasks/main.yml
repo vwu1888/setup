@@ -4,3 +4,10 @@
 - include_tasks: udev.yml
 - include_tasks: zephyr.yml
 - include_tasks: digilent.yml
+
+- name: Install Fast Node Manager (fnm)
+  ansible.builtin.shell:
+    cmd: curl -fsSL https://fnm.vercel.app/install | zsh -s -- --skip-shell
+    creates: "{{ ansible_env.HOME }}/.local/share/fnm"
+  # Explicitly run as your normal user, not root
+  become: false
