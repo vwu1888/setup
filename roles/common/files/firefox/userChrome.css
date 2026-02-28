@@ -1,0 +1,89 @@
+/* Hide top tabs */
+#tabbrowser-tabs {
+  visibility: collapse;
+}
+/* Container: All UI elements at the top of the window */
+#navigator-toolbox {
+  display: grid;
+  grid-template-columns: 1fr auto; /* URL bar (1fr), minimize/close buttons (auto) */
+}
+/* Top-right rounded corner */
+:root[tabsintitlebar][sizemode="normal"]:not([gtktiledwindow="true"]) #TabsToolbar {
+  border-top-right-radius: var(--border-radius-medium);
+}
+/* Container: "Menu bar" - File, Edit, View, etc */
+#toolbar-menubar:not([inactive="true"]) {
+  display: none !important;
+}
+/* Unset extra vertical padding when the menu bar is shown */
+#toolbar-menubar[autohide="true"]:not([inactive="true"]) {
+  :root[tabsintitlebar] #navigator-toolbox:not([tabs-hidden]) > & {
+    min-height: unset;
+  }
+}
+/* Container: URL bar, back buttons, addon buttons, etc */
+#nav-bar {
+  /* Place below application menu, to the left of the minimize/maximize/close buttons */
+  order: 0;
+  grid-row: 2;
+}
+/* Top-left rounded corner */
+:root[tabsintitlebar][sizemode="normal"]:not([gtktiledwindow="true"]) #nav-bar {
+  border-top-left-radius: var(--border-radius-medium);
+}
+/* When window is not focused, match the URL bar opacity with the inactive application buttons */
+#nav-bar {
+  :root[tabsintitlebar] & {
+    will-change: opacity;
+    transition: opacity var(--inactive-window-transition);
+
+    &:-moz-window-inactive {
+      opacity: var(--inactive-titlebar-opacity);
+    }
+  }
+}
+/* Remove right-side padding on last item in the URL bar */
+#PanelUI-menu-button {
+  padding-inline-end: 0 !important;
+}
+/* Container: minimize, maximize, close buttons and drag box */
+#navigator-toolbox #TabsToolbar {
+  /* Place below application menu, to the right of the URL bar */
+  order: 1;
+  grid-row: 2;
+  /* Match this container styling with the URL bar */
+  background-color: var(--toolbar-bgcolor) !important;
+  background-image: var(--toolbar-bgimage);
+  color: var(--toolbar-color) !important;
+  /* Right-side padding is moved from menu button to the right edge */
+  padding-right: var(--toolbar-start-end-padding) !important;
+}
+/* Inline drag box */
+#TabsToolbar .titlebar-spacer {
+  background-color: rgba(0,0,0,0.06);
+  margin: var(--toolbarbutton-outer-padding);
+  border-radius: var(--border-radius-medium);
+  cursor: grab;
+  width: var(--urlbar-min-height) !important;
+  height: var(--urlbar-min-height);
+  align-self: center;
+}
+#TabsToolbar .titlebar-spacer[type="pre-tabs"] {
+  display: none;
+}
+/* Make buttons in the #TabsToolbar look a little better */
+#TabsToolbar .toolbar-items {
+  margin: var(--toolbarbutton-outer-padding);
+}
+/* Container: "Bookmarks Toolbar" - this is under the URL bar */
+#PersonalToolbar {
+  /* Place below URL bar and back buttons */
+  order: 2;
+  grid-row: 3;
+  grid-column: 1 / span 2; /* Full width: span both columns */
+}
+/* If you would like to hide one of:
+ - "Recent browser history across windows and devices" button
+ - "List all tabs" dropdown
+Do that through the "Customize Toolbar" and drag the items off the toolbar.
+*/

@@ -59,3 +59,4 @@
 - include_tasks: 1password.yml
 - include_tasks: mullvad.yml
 - include_tasks: grub.yml
+- include_tasks: firefox.yml
