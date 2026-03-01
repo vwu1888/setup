@@ -24,6 +24,7 @@
     src: "firefox/user.js"
     dest: "{{ item.path }}/user.js"
     mode: '0644'
+    force: false
   loop: "{{ firefox_profiles.files }}"
 
 - name: Import userCSS customization
@@ -31,4 +32,5 @@
     src: "firefox/userChrome.css"
     dest: "{{ item.path }}/chrome/userChrome.css"
     mode: '0644'
+    force: false
   loop: "{{ firefox_profiles.files }}"
