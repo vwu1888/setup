@@ -5,6 +5,14 @@
 - include_tasks: zephyr.yml
 - include_tasks: digilent.yml
 
+- name: Add user to groups
+  user:
+    name: "{{ ansible_user_id }}"
+    groups: dialout
+    append: true
+    state: present
+  become: true
+
 - name: Install Fast Node Manager (fnm)
   ansible.builtin.shell:
     cmd: curl -fsSL https://fnm.vercel.app/install | zsh -s -- --skip-shell
