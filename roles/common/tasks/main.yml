@@ -60,3 +60,18 @@
 - include_tasks: mullvad.yml
 - include_tasks: grub.yml
 - include_tasks: firefox.yml
+
+# ==========================================
+# Config FW control
+# ==========================================
+- name: Get Framework Control
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/ozturkkl/framework-control/main/install-linux.sh
+    dest: /tmp/install-fw-ctrl.sh
+    mode: '0700'
+
+- name: Install Framework Control
+  ansible.builtin.command: /tmp/install-fw-ctrl.sh
+  args:
+    creates: /usr/local/bin/framework-control
+  become: true
